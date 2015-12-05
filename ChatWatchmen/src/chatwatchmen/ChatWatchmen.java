@@ -25,13 +25,14 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class ChatWatchmen extends JavaPlugin {
 
-    public static final Logger log=Logger.getLogger("ChatWatchmen");
-    public static boolean CHANGED=false;
+    public static final Logger log = Logger.getLogger("ChatWatchmen");
+    public static boolean CHANGED = false;
 
     public static ArrayList<String> words;
     public static ArrayList<String> phrases;
     public static ArrayList<String> exceptions;
 
+    @Override
     public void onEnable() {
         if (!(new File("plugins", "ChatWatchmen").isDirectory())) {
             new File("plugins", "ChatWatchmen").mkdir();
@@ -41,41 +42,39 @@ public class ChatWatchmen extends JavaPlugin {
             Dictionaries.load(this);
             Config.load(this);
             Spy.load(this);
-            words=Dictionaries.getWords();
-            phrases=Dictionaries.getPhrases();
-            exceptions=Dictionaries.getExceptions();
-        }
-        catch (IOException ex) {
-        }
-        catch (InvalidConfigurationException ex) {
+            words = Dictionaries.getWords();
+            phrases = Dictionaries.getPhrases();
+            exceptions = Dictionaries.getExceptions();
+        } catch (IOException | InvalidConfigurationException ex) {
         }
 
-        PluginManager listeners=getServer().getPluginManager();
+        PluginManager listeners = getServer().getPluginManager();
         listeners.registerEvents(new ChatMessage(), this);
         listeners.registerEvents(new BlockedCommands(), this);
     }
 
+    @Override
     public void onDisable() {
         try {
             Dictionaries.save(words, phrases, exceptions, CHANGED);
             Spy.save();
-        }
-        catch (IOException ex) {
+        } catch (IOException IOex) {
         }
     }
 
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (cmd.getName().equalsIgnoreCase("chatadd")) { //adding new phrase/word to list of restricted words or exceptions
-            if (args.length==2) {
-                if (args[0].equalsIgnoreCase("word")||args[0].equalsIgnoreCase("w")) {
+            if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("word") || args[0].equalsIgnoreCase("w")) {
                     add(sender, "W", args[1]);
                     return true;
                 }
-                if (args[0].equalsIgnoreCase("phrase")||args[0].equalsIgnoreCase("p")) {
+                if (args[0].equalsIgnoreCase("phrase") || args[0].equalsIgnoreCase("p")) {
                     add(sender, "P", args[1]);
                     return true;
                 }
-                if (args[0].equalsIgnoreCase("exception")||args[0].equalsIgnoreCase("e")) {
+                if (args[0].equalsIgnoreCase("exception") || args[0].equalsIgnoreCase("e")) {
                     add(sender, "E", args[1]);
                     return true;
                 }
@@ -83,16 +82,16 @@ public class ChatWatchmen extends JavaPlugin {
             return false;
         }
         if (cmd.getName().equalsIgnoreCase("chatremove")) { //removing phrase/word from list of restricted words or exceptions
-            if (args.length==2) {
-                if (args[0].equalsIgnoreCase("word")||args[0].equalsIgnoreCase("w")) {
+            if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("word") || args[0].equalsIgnoreCase("w")) {
                     remove(sender, "W", args[1]);
                     return true;
                 }
-                if (args[0].equalsIgnoreCase("phrase")||args[0].equalsIgnoreCase("p")) {
+                if (args[0].equalsIgnoreCase("phrase") || args[0].equalsIgnoreCase("p")) {
                     remove(sender, "P", args[1]);
                     return true;
                 }
-                if (args[0].equalsIgnoreCase("exception")||args[0].equalsIgnoreCase("e")) {
+                if (args[0].equalsIgnoreCase("exception") || args[0].equalsIgnoreCase("e")) {
                     remove(sender, "E", args[1]);
                     return true;
                 }
@@ -100,16 +99,16 @@ public class ChatWatchmen extends JavaPlugin {
             return false;
         }
         if (cmd.getName().equalsIgnoreCase("chatshow")) { //showing list of all restricted phrases/words or all exceptions
-            if (args.length==1) {
-                if (args[0].equalsIgnoreCase("words")||args[0].equalsIgnoreCase("w")) {
+            if (args.length == 1) {
+                if (args[0].equalsIgnoreCase("words") || args[0].equalsIgnoreCase("w")) {
                     show(sender, "W");
                     return true;
                 }
-                if (args[0].equalsIgnoreCase("phrases")||args[0].equalsIgnoreCase("p")) {
+                if (args[0].equalsIgnoreCase("phrases") || args[0].equalsIgnoreCase("p")) {
                     show(sender, "P");
                     return true;
                 }
-                if (args[0].equalsIgnoreCase("exceptions")||args[0].equalsIgnoreCase("e")) {
+                if (args[0].equalsIgnoreCase("exceptions") || args[0].equalsIgnoreCase("e")) {
                     show(sender, "E");
                     return true;
                 }
@@ -117,24 +116,18 @@ public class ChatWatchmen extends JavaPlugin {
             return false;
         }
         if (cmd.getName().equalsIgnoreCase("chatreload")) { //reloading wordlists
-            if (args.length==1) {
-                if (args[0].equalsIgnoreCase("soft")||args[0].equalsIgnoreCase("s")) {
+            if (args.length == 1) {
+                if (args[0].equalsIgnoreCase("soft") || args[0].equalsIgnoreCase("s")) {
                     try {
                         Sreload(sender);
-                    }
-                    catch (IOException ex) {
-                    }
-                    catch (InvalidConfigurationException ex) {
+                    } catch (IOException | InvalidConfigurationException ex) {
                     }
                     return true;
                 }
-                if (args[0].equalsIgnoreCase("hard")||args[0].equalsIgnoreCase("h")) {
+                if (args[0].equalsIgnoreCase("hard") || args[0].equalsIgnoreCase("h")) {
                     try {
                         Hreload(sender);
-                    }
-                    catch (IOException ex) {
-                    }
-                    catch (InvalidConfigurationException ex) {
+                    } catch (IOException | InvalidConfigurationException ex) {
                     }
                     return true;
                 }
@@ -142,11 +135,11 @@ public class ChatWatchmen extends JavaPlugin {
             return false;
         }
         if (cmd.getName().equalsIgnoreCase("chatspy")) { //reloading wordlists
-            if (args.length==0) {
+            if (args.length == 0) {
                 spy(sender.getName());
                 return true;
             }
-            if (args.length==1) {
+            if (args.length == 1) {
                 spy(args[0]);
                 return true;
             }
@@ -171,55 +164,55 @@ public class ChatWatchmen extends JavaPlugin {
             if (!words.contains(value.toLowerCase())) {
                 words.add(value.toLowerCase());
             }
-            sender.sendMessage(Lang.getMessage("WAL")+value.toLowerCase()+Lang.getMessage("WAR"));
+            sender.sendMessage(Lang.getMessage("WAL") + value.toLowerCase() + Lang.getMessage("WAR"));
         }
         if (type.equals("P")) {
             if (!phrases.contains(value.toLowerCase())) {
                 phrases.add(value.toLowerCase());
             }
-            sender.sendMessage(Lang.getMessage("PAL")+value.toLowerCase()+Lang.getMessage("PAR"));
+            sender.sendMessage(Lang.getMessage("PAL") + value.toLowerCase() + Lang.getMessage("PAR"));
         }
         if (type.equals("E")) {
             if (!exceptions.contains(value.toLowerCase())) {
                 exceptions.add(value.toLowerCase());
             }
-            sender.sendMessage(Lang.getMessage("EAL")+value.toLowerCase()+Lang.getMessage("EAR"));
+            sender.sendMessage(Lang.getMessage("EAL") + value.toLowerCase() + Lang.getMessage("EAR"));
         }
-        CHANGED=true;
+        CHANGED = true;
     }
 
     private void remove(CommandSender sender, String type, String value) { //types(W-word, P-phrase, E-exception)
         if (type.equals("W")) {
             words.remove(value.toLowerCase());
-            sender.sendMessage(Lang.getMessage("WRL")+value.toLowerCase()+Lang.getMessage("WRR"));
+            sender.sendMessage(Lang.getMessage("WRL") + value.toLowerCase() + Lang.getMessage("WRR"));
         }
         if (type.equals("P")) {
             phrases.remove(value.toLowerCase());
-            sender.sendMessage(Lang.getMessage("PRL")+value.toLowerCase()+Lang.getMessage("PRR"));
+            sender.sendMessage(Lang.getMessage("PRL") + value.toLowerCase() + Lang.getMessage("PRR"));
         }
         if (type.equals("E")) {
             exceptions.remove(value.toLowerCase());
-            sender.sendMessage(Lang.getMessage("ERL")+value.toLowerCase()+Lang.getMessage("ERR"));
+            sender.sendMessage(Lang.getMessage("ERL") + value.toLowerCase() + Lang.getMessage("ERR"));
         }
-        CHANGED=true;
+        CHANGED = true;
     }
 
     private void show(CommandSender sender, String type) { //types(W-word, P-phrase, E-exception)
         if (type.equals("W")) {
             sender.sendMessage(Lang.getMessage("SW"));
-            for (String next:words) {
+            for (String next : words) {
                 sender.sendMessage(next);
             }
         }
         if (type.equals("P")) {
             sender.sendMessage(Lang.getMessage("SP"));
-            for (String next:phrases) {
+            for (String next : phrases) {
                 sender.sendMessage(next);
             }
         }
         if (type.equals("E")) {
             sender.sendMessage(Lang.getMessage("SE"));
-            for (String next:exceptions) {
+            for (String next : exceptions) {
                 sender.sendMessage(next);
             }
         }
@@ -229,11 +222,11 @@ public class ChatWatchmen extends JavaPlugin {
         Lang.load(this);
         Config.load(this);
         Dictionaries.load(this);
-        words=Dictionaries.getWords();
-        phrases=Dictionaries.getPhrases();
-        exceptions=Dictionaries.getExceptions();
+        words = Dictionaries.getWords();
+        phrases = Dictionaries.getPhrases();
+        exceptions = Dictionaries.getExceptions();
 
-        CHANGED=false;
+        CHANGED = false;
         sender.sendMessage(Lang.getMessage("PRS"));
     }
 
@@ -242,29 +235,27 @@ public class ChatWatchmen extends JavaPlugin {
         Config.load(this);
         Dictionaries.save(words, phrases, exceptions, CHANGED);
         Dictionaries.load(this);
-        words=Dictionaries.getWords();
-        phrases=Dictionaries.getPhrases();
-        exceptions=Dictionaries.getExceptions();
+        words = Dictionaries.getWords();
+        phrases = Dictionaries.getPhrases();
+        exceptions = Dictionaries.getExceptions();
 
-        CHANGED=false;
+        CHANGED = false;
         sender.sendMessage(Lang.getMessage("PRH"));
     }
 
     private void spy(String name) {
         if (Spy.canSee(name)) {
             try {
-                Player player=Bukkit.getPlayer(name);
+                Player player = Bukkit.getPlayer(name);
                 player.sendMessage(Lang.getMessage("Soff"));
-            }
-            catch (NullPointerException NPex) {
+            } catch (NullPointerException NPex) {
             }
         }
         else {
             try {
-                Player player=Bukkit.getPlayer(name);
+                Player player = Bukkit.getPlayer(name);
                 player.sendMessage(Lang.getMessage("Son"));
-            }
-            catch (NullPointerException NPex) {
+            } catch (NullPointerException NPex) {
             }
         }
         Spy.switchSee(name);

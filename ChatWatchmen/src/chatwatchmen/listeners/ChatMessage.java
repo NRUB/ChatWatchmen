@@ -19,7 +19,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  */
 public class ChatMessage implements Listener {
 
-    private static String suffix="";
+    private static String suffix = "";
     private static String originalMessage;
     private static String[] messageWords;
     private static String censoredMessage;
@@ -33,46 +33,44 @@ public class ChatMessage implements Listener {
 
         setPrefix(PCevent.getFormat());
 
-        boolean wasCensored=false;
+        boolean wasCensored = false;
 
-        censoredMessage="";
-        originalMessage=PCevent.getMessage();
-        WORDS=ChatWatchmen.getWords();
-        PHRASES=ChatWatchmen.getPhrases();
-        EXCEPTIONS=ChatWatchmen.getExceptions();
+        censoredMessage = "";
+        originalMessage = PCevent.getMessage();
+        WORDS = ChatWatchmen.getWords();
+        PHRASES = ChatWatchmen.getPhrases();
+        EXCEPTIONS = ChatWatchmen.getExceptions();
 
-        messageWords=originalMessage.split(" ");
+        messageWords = originalMessage.split(" ");
 
-        for (String w:messageWords) { //checking all words in message
-            String tempWord=w;
-            String prepared=prepareWord(w);
-            boolean wasVulgar=false;
+        for (String w : messageWords) { //checking all words in message
+            String tempWord = w;
+            String prepared = prepareWord(w);
+            boolean wasVulgar = false;
             if (stepA(prepared)) {
-                tempWord=replaceVulgar(prepared);
-                wasCensored=true;
-                wasVulgar=true;
+                tempWord = replaceVulgar(prepared);
+                wasCensored = true;
+                wasVulgar = true;
             }
             else {
-                if (stepB(prepared)&&!stepC(prepared)) {
-                    tempWord=replaceVulgar(prepared);
-                    wasCensored=true;
-                    wasVulgar=true;
+                if (stepB(prepared) && !stepC(prepared)) {
+                    tempWord = replaceVulgar(prepared);
+                    wasCensored = true;
+                    wasVulgar = true;
                 }
             }
             if (!wasVulgar) {
                 setPrefix(w);
             }
-            wasVulgar=false;
-            censoredMessage+=tempWord+" ";
+            censoredMessage += tempWord + " ";
         }
-        censoredMessage=censoredMessage.trim();
+        censoredMessage = censoredMessage.trim();
 
         if (wasCensored) {
-            getServer().getConsoleSender().sendMessage(ChatColor.RED+Lang.getMessage("WC")+"\""+originalMessage+"\" ~"+PCevent.getPlayer().getName().replaceAll("§.", "").replaceAll("&.", ""));
-
-            for (Player p:Bukkit.getOnlinePlayers()) {
+            getServer().getConsoleSender().sendMessage(ChatColor.RED + Lang.getMessage("WC") + "\"" + originalMessage + "\" ~" + PCevent.getPlayer().getName().replaceAll("§.", "").replaceAll("&.", ""));
+            for (Player p : Bukkit.getOnlinePlayers()) {
                 if (Spy.canSee(p.getName())) {
-                    p.sendMessage("§4[ChatWatchmen]: §f"+PCevent.getPlayer().getName()+": "+originalMessage);
+                    p.sendMessage("§4[ChatWatchmen]: §f" + PCevent.getPlayer().getName() + ": " + originalMessage);
                 }
                 else {
                 }
@@ -82,13 +80,13 @@ public class ChatMessage implements Listener {
     }
 
     private String prepareWord(String wordToMask) {
-        String maskedWord=wordToMask;
+        String maskedWord = wordToMask;
 
-        //catch all prefix even if it's not a color prefix like "Hide&Seek"
-        maskedWord=maskedWord.replaceAll("§.", "");
-        maskedWord=maskedWord.replaceAll("&.", "");
-        maskedWord=maskedWord.trim();
-        maskedWord=maskedWord.replaceAll(" ", "");
+        //catch all prefixes
+        maskedWord = maskedWord.replaceAll("§[0-9a-fA-Fk-oK-O]", "");
+        maskedWord = maskedWord.replaceAll("&[0-9a-fA-Fk-oK-O]", "");
+        maskedWord = maskedWord.trim();
+        maskedWord = maskedWord.replaceAll(" ", "");
 
         return maskedWord;
     }
@@ -98,7 +96,7 @@ public class ChatMessage implements Listener {
     }
 
     private boolean stepB(String word) { //true if containt vulgar phrase
-        for (String p:PHRASES) {
+        for (String p : PHRASES) {
             if ((word.toLowerCase()).contains(p)) {
                 return true;
             }
@@ -107,7 +105,7 @@ public class ChatMessage implements Listener {
     }
 
     private boolean stepC(String word) { //true if is exception
-        for (String e:EXCEPTIONS) {
+        for (String e : EXCEPTIONS) {
             if (word.equalsIgnoreCase(e)) {
                 return true;
             }
@@ -116,20 +114,20 @@ public class ChatMessage implements Listener {
     }
 
     private String replaceVulgar(String vulgar) {
-        int letters=vulgar.length();
-        String censored=Config.getPrefix();
-        for (; letters>0; letters--) {
-            censored+="*";
+        int letters = vulgar.length();
+        String censored = Config.getPrefix();
+        for (; letters > 0; letters--) {
+            censored += "*";
         }
-        censored+=suffix;
+        censored += suffix;
         return censored;
     }
 
     private void setPrefix(String string) {
-        char[] c=string.toCharArray();
-        for (int i=0; i<c.length; i++) {
-            if (c[i]=='&'||c[i]=='§') {
-                suffix="§"+c[i+1];
+        char[] c = string.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            if (c[i] == '&' || c[i] == '§') {
+                suffix = "§" + c[i + 1];
             }
         }
     }

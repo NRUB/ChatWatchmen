@@ -21,9 +21,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Dictionaries {
 
-    private static ArrayList<String> WORDS=new ArrayList<>();
-    private static ArrayList<String> PHRASES=new ArrayList<>();
-    private static ArrayList<String> EXCEPTIONS=new ArrayList<>();
+    private static final ArrayList<String> WORDS = new ArrayList<>();
+    private static final ArrayList<String> PHRASES = new ArrayList<>();
+    private static final ArrayList<String> EXCEPTIONS = new ArrayList<>();
 
     public static void load(JavaPlugin plugin) throws IOException {
         WORDS.clear();
@@ -32,37 +32,36 @@ public class Dictionaries {
 
         InputStream loadDictionaries;
         try {
-            loadDictionaries=new FileInputStream(new File("plugins/ChatWatchmen/dictionaries.yml"));
-        }
-        catch (FileNotFoundException FNFex) {
-            InputStream in=plugin.getResource("dictionaries.yml");
-            OutputStream out=new FileOutputStream(new File("plugins/ChatWatchmen", "dictionaries.yml"));
-            byte[] buf=new byte[2048];
+            loadDictionaries = new FileInputStream(new File("plugins/ChatWatchmen/dictionaries.yml"));
+        } catch (FileNotFoundException FNFex) {
+            InputStream in = plugin.getResource("dictionaries.yml");
+            OutputStream out = new FileOutputStream(new File("plugins/ChatWatchmen", "dictionaries.yml"));
+            byte[] buf = new byte[2048];
             int len;
-            while ((len=in.read(buf))>0) {
+            while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
             out.close();
             in.close();
-            loadDictionaries=new FileInputStream(new File("plugins/ChatWatchmen/dictionaries.yml"));
+            loadDictionaries = new FileInputStream(new File("plugins/ChatWatchmen/dictionaries.yml"));
         }
-        YamlConfiguration dictionaries=YamlConfiguration.loadConfiguration(new File("plugins/ChatWatchmen/dictionaries.yml"));
+        YamlConfiguration dictionaries = YamlConfiguration.loadConfiguration(new File("plugins/ChatWatchmen/dictionaries.yml"));
 
         ArrayList<String> temp;
-        temp=(ArrayList<String>) dictionaries.getStringList("WORDS");
-        for (String s:temp) {
+        temp = (ArrayList<String>) dictionaries.getStringList("WORDS");
+        for (String s : temp) {
             if (!WORDS.contains(s.toLowerCase())) {
                 WORDS.add(s.toLowerCase());
             }
         }
-        temp=(ArrayList<String>) dictionaries.getStringList("PHRASES");
-        for (String s:temp) {
+        temp = (ArrayList<String>) dictionaries.getStringList("PHRASES");
+        for (String s : temp) {
             if (!PHRASES.contains(s.toLowerCase())) {
                 PHRASES.add(s.toLowerCase());
             }
         }
-        temp=(ArrayList<String>) dictionaries.getStringList("EXCEPTIONS");
-        for (String s:temp) {
+        temp = (ArrayList<String>) dictionaries.getStringList("EXCEPTIONS");
+        for (String s : temp) {
             if (!EXCEPTIONS.contains(s.toLowerCase())) {
                 EXCEPTIONS.add(s.toLowerCase());
             }
@@ -79,36 +78,36 @@ public class Dictionaries {
 
     public static void save(ArrayList<String> W, ArrayList<String> P, ArrayList<String> E, boolean makeBackup) throws FileNotFoundException, IOException {
         BufferedWriter out;
-        out=new BufferedWriter(new OutputStreamWriter(new FileOutputStream("plugins/ChatWatchmen/dictionariesUpdate.yml", false), "UTF-8"));
+        out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("plugins/ChatWatchmen/dictionariesUpdate.yml", false), "UTF-8"));
         out.write("WORDS:\n");
-        for (String word:W) {
-            out.write("  - "+word+"\n");
+        for (String word : W) {
+            out.write("  - " + word + "\n");
         }
         out.write("PHRASES:\n");
-        for (String phrase:P) {
-            out.write("  - "+phrase+"\n");
+        for (String phrase : P) {
+            out.write("  - " + phrase + "\n");
         }
         out.write("EXCEPTIONS:\n");
-        for (String exception:E) {
-            out.write("  - "+exception+"\n");
+        for (String exception : E) {
+            out.write("  - " + exception + "\n");
         }
         out.close();
         if (makeBackup) {
-            String date="";
-            Date today=new Date(System.currentTimeMillis());
-            date+=today.getYear()+1900+"-";
-            date+=today.getMonth()+1;
-            date+="-"+today.getDate()+" ";
-            date+=today.getHours()+"_";
-            if (today.getMinutes()<10) {
-                date+="0";
+            String date = "";
+            Date today = new Date(System.currentTimeMillis());
+            date += today.getYear() + 1900 + "-";
+            date += today.getMonth() + 1;
+            date += "-" + today.getDate() + " ";
+            date += today.getHours() + "_";
+            if (today.getMinutes() < 10) {
+                date += "0";
             }
-            date+=today.getMinutes()+"_";
-            if (today.getSeconds()<10) {
-                date+="0";
+            date += today.getMinutes() + "_";
+            if (today.getSeconds() < 10) {
+                date += "0";
             }
-            date+=today.getSeconds();
-            new File("plugins/ChatWatchmen/dictionaries.yml").renameTo(new File("plugins/ChatWatchmen/"+date+" - dictionaries.yml"));
+            date += today.getSeconds();
+            new File("plugins/ChatWatchmen/dictionaries.yml").renameTo(new File("plugins/ChatWatchmen/" + date + " - dictionaries.yml"));
         }
         new File("plugins/ChatWatchmen/dictionaries.yml").delete();
         new File("plugins/ChatWatchmen/dictionariesUpdate.yml").renameTo(new File("plugins/ChatWatchmen/dictionaries.yml"));

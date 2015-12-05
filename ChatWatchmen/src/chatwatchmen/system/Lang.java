@@ -46,50 +46,49 @@ public class Lang {
     private static Map<String, String> langPack;
 
     public static void load(JavaPlugin plugin) throws IOException {
-        Yaml lang=new Yaml();
+        Yaml lang = new Yaml();
         InputStream loadLang;
         try {
-            loadLang=new FileInputStream(new File("plugins/ChatWatchmen/lang.yml"));
-        }
-        catch (FileNotFoundException FNFex) {
-            InputStream in=plugin.getResource("lang.yml");
-            OutputStream out=new FileOutputStream(new File("plugins/ChatWatchmen", "lang.yml"));
-            byte[] buf=new byte[2048];
+            loadLang = new FileInputStream(new File("plugins/ChatWatchmen/lang.yml"));
+        } catch (FileNotFoundException FNFex) {
+            InputStream in = plugin.getResource("lang.yml");
+            OutputStream out = new FileOutputStream(new File("plugins/ChatWatchmen", "lang.yml"));
+            byte[] buf = new byte[2048];
             int len;
-            while ((len=in.read(buf))>0) {
+            while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
             out.close();
             in.close();
-            loadLang=new FileInputStream(new File("plugins/ChatWatchmen/lang.yml"));
+            loadLang = new FileInputStream(new File("plugins/ChatWatchmen/lang.yml"));
         }
-        langPack=(Map<String, String>) lang.load(loadLang);
+        langPack = (Map<String, String>) lang.load(loadLang);
 
-        PRS=langPack.get("PLUGIN_RELOADED_SOFT");
-        PRH=langPack.get("PLUGIN_RELOADED_HARD");
-        Son=langPack.get("SPY_ON");
-        Soff=langPack.get("SPY_OFF");
+        PRS = langPack.get("PLUGIN_RELOADED_SOFT");
+        PRH = langPack.get("PLUGIN_RELOADED_HARD");
+        Son = langPack.get("SPY_ON");
+        Soff = langPack.get("SPY_OFF");
 
-        WAL=langPack.get("WORD_ADD_LEFT");
-        WAR=langPack.get("WORD_ADD_RIGHT");
-        PAL=langPack.get("PHRASE_ADD_LEFT");
-        PAR=langPack.get("PHRASE_ADD_RIGHT");
-        EAL=langPack.get("EXCEPTION_ADD_LEFT");
-        EAR=langPack.get("EXCEPTION_ADD_RIGHT");
+        WAL = langPack.get("WORD_ADD_LEFT");
+        WAR = langPack.get("WORD_ADD_RIGHT");
+        PAL = langPack.get("PHRASE_ADD_LEFT");
+        PAR = langPack.get("PHRASE_ADD_RIGHT");
+        EAL = langPack.get("EXCEPTION_ADD_LEFT");
+        EAR = langPack.get("EXCEPTION_ADD_RIGHT");
 
-        WRL=langPack.get("WORD_REMOVE_LEFT");
-        WRR=langPack.get("WORD_REMOVE_RIGHT");
-        PRL=langPack.get("PHRASE_REMOVE_LEFT");
-        PRR=langPack.get("PHRASE_REMOVE_RIGHT");
-        ERL=langPack.get("EXCEPTION_REMOVE_LEFT");
-        ERR=langPack.get("EXCEPTION_REMOVE_RIGHT");
+        WRL = langPack.get("WORD_REMOVE_LEFT");
+        WRR = langPack.get("WORD_REMOVE_RIGHT");
+        PRL = langPack.get("PHRASE_REMOVE_LEFT");
+        PRR = langPack.get("PHRASE_REMOVE_RIGHT");
+        ERL = langPack.get("EXCEPTION_REMOVE_LEFT");
+        ERR = langPack.get("EXCEPTION_REMOVE_RIGHT");
 
-        SW=langPack.get("SHOW_WORDS");
-        SP=langPack.get("SHOW_PHRASE");
-        SE=langPack.get("SHOW_EXCEPTION");
+        SW = langPack.get("SHOW_WORDS");
+        SP = langPack.get("SHOW_PHRASE");
+        SE = langPack.get("SHOW_EXCEPTION");
 
-        WC=langPack.get("WAS_CENSORED");
-        KM=langPack.get("KICK_MESSAGE");
+        WC = langPack.get("WAS_CENSORED");
+        KM = langPack.get("KICK_MESSAGE");
     }
 
     public static String getMessage(String msg) {

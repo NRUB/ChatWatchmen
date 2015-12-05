@@ -18,7 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Config {
 
-    private static ArrayList<String> commands=new ArrayList<>();
+    private static final ArrayList<String> commands = new ArrayList<>();
     private static String prefix;
 
     public static void load(JavaPlugin plugin) throws IOException, FileNotFoundException, InvalidConfigurationException {
@@ -26,29 +26,28 @@ public class Config {
         InputStream loadConfig;
 
         try {
-            loadConfig=new FileInputStream(new File("plugins/ChatWatchmen/config.yml"));
+            loadConfig = new FileInputStream(new File("plugins/ChatWatchmen/config.yml"));
             loadConfig.close();
-        }
-        catch (FileNotFoundException FNFex) {
-            InputStream in=plugin.getResource("config.yml");
-            OutputStream out=new FileOutputStream(new File("plugins/ChatWatchmen", "config.yml"));
-            byte[] buf=new byte[2048];
+        } catch (FileNotFoundException FNFex) {
+            InputStream in = plugin.getResource("config.yml");
+            OutputStream out = new FileOutputStream(new File("plugins/ChatWatchmen", "config.yml"));
+            byte[] buf = new byte[2048];
             int len;
-            while ((len=in.read(buf))>0) {
+            while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
             out.close();
             in.close();
         }
-        YamlConfiguration config=YamlConfiguration.loadConfiguration(new File("plugins/ChatWatchmen/config.yml"));
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File("plugins/ChatWatchmen/config.yml"));
 
-        ArrayList<String> tmp=(ArrayList<String>) config.getStringList("BlockedCmds");
+        ArrayList<String> tmp = (ArrayList<String>) config.getStringList("BlockedCmds");
 
-        for (String s:tmp) {
+        for (String s : tmp) {
             commands.add(s.toLowerCase().trim());
         }
 
-        prefix=config.getString("Colors.prefix", "§f§l").replace('&', '§');
+        prefix = config.getString("Colors.prefix", "§f§l").replace('&', '§');
     }
 
     public static ArrayList<String> getCommands() {

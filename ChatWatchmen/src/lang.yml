@@ -1,0 +1,25 @@
+PLUGIN_RELOADED_SOFT: "Odswiezono slowniki!"
+PLUGIN_RELOADED_HARD: "Plugin zostal przeladowany!"
+SPY_ON: "Podglad oryginalnej wiadomosci wlaczony!"
+SPY_OFF: "Podglad oryginalnej wiadomosci wylaczony!"
+
+WORD_ADD_LEFT: "Dodano nowe slowo - \""
+WORD_ADD_RIGHT: "\""
+PHRASE_ADD_LEFT: "Dodano nowa fraze - \""
+PHRASE_ADD_RIGHT: "\""
+EXCEPTION_ADD_LEFT: "Dodano nowy wyjatek - \""
+EXCEPTION_ADD_RIGHT: "\""
+
+WORD_REMOVE_LEFT: "Usunieto slowo - \""
+WORD_REMOVE_RIGHT: "\""
+PHRASE_REMOVE_LEFT: "Usunieto fraze - \""
+PHRASE_REMOVE_RIGHT: "\""
+EXCEPTION_REMOVE_LEFT: "Usunieto wyjatek - \""
+EXCEPTION_REMOVE_RIGHT: "\""
+
+SHOW_WORDS: "§b§lLista slow:"
+SHOW_PHRASE: "§b§lLista fraz:"
+SHOW_EXCEPTION: "§b§lLista wyjatkow:"
+
+WAS_CENSORED: "Ocenzurowano: "
+KICK_MESSAGE: "Nie ladnie, bardzo nie ladnie."

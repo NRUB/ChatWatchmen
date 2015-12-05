@@ -1,0 +1,5 @@
+BlockedCmds:
+    - /msg **
+    - /msg *
+Colors:
+    prefix: "&f&l"

@@ -1,0 +1,55 @@
+name: ChatWatchmen
+author: NRUB
+main: chatwatchmen.ChatWatchmen
+version: 0.7.21
+description: Better and more efficient censoring and monitoring of chat.
+
+commands:
+    chatadd:
+        description: command for adding new phrase/word to list of restricted words or exceptions.
+        usage:
+            - /<command> word|w
+            - /<command> phrase|p
+            - /<command> exception|e
+        permission: chatwatchmen.chatadd
+        permission-message: You do not have sufficient permission!
+    chatremove:
+        description: command for removing phrase/word from list of restricted words or exceptions.
+        usage:
+            - /<command> word|w
+            - /<command> phrase|p
+            - /<command> exception|e
+        permission: chatwatchmen.chatremove
+        permission-message: You do not have sufficient permission!
+    chatshow:
+        description: command for showing list of all restricted phrases/words or all exceptions.
+        usage:
+            - /<command> words|w
+            - /<command> phrases|p
+            - /<command> exceptions|e
+        permission: chatwatchmen.chatshow
+        permission-message: You do not have sufficient permission!
+    chatreload:
+        description: command for reloading wordlists.
+        usage:
+            - /<command> soft
+            - /<command> hard
+        permission: chatwatchmen.chatreload
+        permission-message: You do not have sufficient permission!
+    chatspy:
+        description: command for showing/hidding original consored message.
+        usage: /<command>
+        permission: chatwatchmen.chatspy
+        permission-message: You do not have sufficient permission!
+        
+permisions:
+    chatadd:
+        default: false
+    chatremove:
+        default: false
+    chatshow:
+        default: false
+    chatreload:
+        default: false
+    chatspy:
+        default: false

@@ -1,5 +1,8 @@
+#Here you can specify which commands will be disabled, for all even in console. Use yaml list.
 BlockedCmds:
     - /msg **
     - /msg *
+
+#Because blocked words is replaced by '*', here you can specifie color and other atributes of this.
 Colors:
     prefix: "&f&l"

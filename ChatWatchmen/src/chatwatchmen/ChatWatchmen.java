@@ -28,9 +28,9 @@ public class ChatWatchmen extends JavaPlugin {
     public static final Logger log = Logger.getLogger("ChatWatchmen");
     public static boolean CHANGED = false;
 
-    public static ArrayList<String> words;
-    public static ArrayList<String> phrases;
-    public static ArrayList<String> exceptions;
+    private static ArrayList<String> words;
+    private static ArrayList<String> phrases;
+    private static ArrayList<String> exceptions;
 
     @Override
     public void onEnable() {
@@ -119,14 +119,14 @@ public class ChatWatchmen extends JavaPlugin {
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("soft") || args[0].equalsIgnoreCase("s")) {
                     try {
-                        Sreload(sender);
+                        reloadS(sender);
                     } catch (IOException | InvalidConfigurationException ex) {
                     }
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("hard") || args[0].equalsIgnoreCase("h")) {
                     try {
-                        Hreload(sender);
+                        reloadH(sender);
                     } catch (IOException | InvalidConfigurationException ex) {
                     }
                     return true;
@@ -218,7 +218,7 @@ public class ChatWatchmen extends JavaPlugin {
         }
     }
 
-    private void Sreload(CommandSender sender) throws IOException, FileNotFoundException, InvalidConfigurationException { //soft reload
+    private void reloadS(CommandSender sender) throws IOException, FileNotFoundException, InvalidConfigurationException { //soft reload
         Lang.load(this);
         Config.load(this);
         Dictionaries.load(this);
@@ -230,7 +230,7 @@ public class ChatWatchmen extends JavaPlugin {
         sender.sendMessage(Lang.getMessage("PRS"));
     }
 
-    private void Hreload(CommandSender sender) throws IOException, FileNotFoundException, InvalidConfigurationException { //hard reload
+    private void reloadH(CommandSender sender) throws IOException, FileNotFoundException, InvalidConfigurationException { //hard reload
         Lang.load(this);
         Config.load(this);
         Dictionaries.save(words, phrases, exceptions, CHANGED);
@@ -244,20 +244,15 @@ public class ChatWatchmen extends JavaPlugin {
     }
 
     private void spy(String name) {
-        if (Spy.canSee(name)) {
-            try {
-                Player player = Bukkit.getPlayer(name);
+        Player player = Bukkit.getPlayer(name);
+        if (player != null) {
+            if (Spy.canSee(name)) {
                 player.sendMessage(Lang.getMessage("Soff"));
-            } catch (NullPointerException NPex) {
             }
-        }
-        else {
-            try {
-                Player player = Bukkit.getPlayer(name);
+            else {
                 player.sendMessage(Lang.getMessage("Son"));
-            } catch (NullPointerException NPex) {
             }
+            Spy.switchSee(name);
         }
-        Spy.switchSee(name);
     }
 }

@@ -7,7 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Config {
 
-    private static final ArrayList<String> commands = new ArrayList<>();
+    private static final List<String> commands = new LinkedList<>();
     private static String prefix;
 
     public static void load(JavaPlugin plugin) throws IOException, FileNotFoundException, InvalidConfigurationException {
@@ -41,7 +42,7 @@ public class Config {
         }
         YamlConfiguration config = YamlConfiguration.loadConfiguration(new File("plugins/ChatWatchmen/config.yml"));
 
-        ArrayList<String> tmp = (ArrayList<String>) config.getStringList("BlockedCmds");
+        List<String> tmp = config.getStringList("BlockedCmds");
 
         for (String s : tmp) {
             commands.add(s.toLowerCase().trim());
@@ -50,7 +51,7 @@ public class Config {
         prefix = config.getString("Colors.prefix", "§f§l").replace('&', '§');
     }
 
-    public static ArrayList<String> getCommands() {
+    public static List<String> getCommands() {
         return commands;
     }
 

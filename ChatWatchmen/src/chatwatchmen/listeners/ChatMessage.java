@@ -19,17 +19,17 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  */
 public class ChatMessage implements Listener {
 
-    private static String suffix = "";
-    private static String originalMessage;
-    private static String[] messageWords;
-    private static String censoredMessage;
+    private String suffix = "";
 
-    private static ArrayList<String> WORDS;
-    private static ArrayList<String> PHRASES;
-    private static ArrayList<String> EXCEPTIONS;
+    private ArrayList<String> WORDS;
+    private ArrayList<String> PHRASES;
+    private ArrayList<String> EXCEPTIONS;
 
     @EventHandler
     synchronized public void BukkitCatchMessage(AsyncPlayerChatEvent PCevent) {
+        String originalMessage;
+        String[] messageWords;
+        String censoredMessage;
 
         setPrefix(PCevent.getFormat());
 
@@ -72,8 +72,6 @@ public class ChatMessage implements Listener {
                 if (Spy.canSee(p.getName())) {
                     p.sendMessage("§4[ChatWatchmen]: §f" + PCevent.getPlayer().getName() + ": " + originalMessage);
                 }
-                else {
-                }
             }
         }
         PCevent.setMessage(censoredMessage);
@@ -86,7 +84,7 @@ public class ChatMessage implements Listener {
         maskedWord = maskedWord.replaceAll("§[0-9a-fA-Fk-oK-O]", "");
         maskedWord = maskedWord.replaceAll("&[0-9a-fA-Fk-oK-O]", "");
         maskedWord = maskedWord.trim();
-        maskedWord = maskedWord.replaceAll(" ", "");
+        maskedWord = maskedWord.replaceAll("\\s+", "");
 
         return maskedWord;
     }

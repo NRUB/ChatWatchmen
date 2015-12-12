@@ -1,7 +1,7 @@
 name: ChatWatchmen
 author: NRUB
 main: chatwatchmen.ChatWatchmen
-version: 0.7.23
+version: 0.7.24
 description: Better and more efficient censoring and monitoring of chat.
 
 commands:

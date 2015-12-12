@@ -21,6 +21,7 @@ public class BlockedCommands implements Listener {
                 getServer().getConsoleSender().sendMessage(ChatColor.RED + PCPevent.getPlayer().getName().replaceAll("§.", "").replaceAll("&.", "") + ": " + PCPevent.getMessage());
                 PCPevent.setMessage("/helpop " + PCPevent.getPlayer().getName().replaceAll("§.", "").replaceAll("&.", "") + ": " + PCPevent.getMessage());
                 PCPevent.getPlayer().kickPlayer(Lang.getMessage("KM"));
+                break;
             }
         }
     }
